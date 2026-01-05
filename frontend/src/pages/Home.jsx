@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { MovieCard } from "../components/MovieCard";
 import { MobileCategory } from "../components/MobileCategory";
-import moviesData from "../Data/movies";
+import moviesData from "../Data/movies.js";
 import { Film } from "lucide-react";
 
 export const Home = () => {
