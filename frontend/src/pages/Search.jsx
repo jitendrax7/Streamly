@@ -1,5 +1,5 @@
 import { useState } from "react";
-import movies from "../Data/movies";
+import movies from "../Data/movies.js";
 import { MovieCard } from "../components/MovieCard";
 
 export const Search = () => {
