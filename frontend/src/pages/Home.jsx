@@ -4,7 +4,7 @@ import { MobileCategory } from "../components/MobileCategory";
 // import moviesData from "../Data/movies.js";
 import { Film } from "lucide-react";
 
-moviesData =  [
+const moviesData =  [
   {
     id: 1,
     title: "Inception",
