@@ -1,8 +1,11 @@
 import { Play, Star } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 export const MovieCard = ({ movie }) => {
+  const navigate = useNavigate();
   return (
-    <div
+    <div 
+      onClick={() => navigate(`/${movie.id}`)}
       className="
         group relative overflow-hidden rounded-xl
         bg-[#1C1C1C]

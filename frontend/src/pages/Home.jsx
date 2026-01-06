@@ -142,7 +142,7 @@ export const Home = () => {
                 ${activeCategory === cat
                   ? "bg-[#E50914]"
                   : "bg-[#1C1C1C] hover:bg-gray-700"
-                }`}
+                } cursor-pointer `}
             >
               {cat}
             </button>
