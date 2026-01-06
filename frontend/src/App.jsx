@@ -14,6 +14,14 @@ function App() {
 
       {/* Desktop Navigation */}
       <TopNav />
+      {/* 📱 Mobile App Name (Minimal, Premium) */}
+      <div className="sm:hidden px-4 pt-4 pb-2">
+        <h1 className="text-2xl font-extrabold tracking-wide">
+          <span className="text-[#E50914]">Stream</span>
+          <span className="text-white">ly</span>
+        </h1>
+      </div>
+
 
       {/* Pages */}
       <Routes>
@@ -22,7 +30,7 @@ function App() {
         <Route path="/about" element={<About />} />
         <Route path="/profile" element={<Profile />} />
       </Routes>
-      <Footer/>
+      <Footer />
 
       {/* Mobile Navigation */}
       <BottomNav />

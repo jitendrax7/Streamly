@@ -6,14 +6,16 @@ export const TopNav = () => {
       className="
         hidden sm:flex
         items-center justify-between
-        px-6 h-16
+        px-6 h-16 md
+        sticky top-0 z-30
         bg-[#141414]
         border-b border-gray-800
       "
     >
       {/* Logo */}
       <h1 className="text-2xl font-bold text-[#E50914]">
-        Streamly
+        <span className="text-[#E50914]">Stream</span>
+        <span className="text-white">ly</span>
       </h1>
 
       {/* Menu */}

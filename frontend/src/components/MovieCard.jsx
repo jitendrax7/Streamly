@@ -1,50 +1,104 @@
+import { Play, Star } from "lucide-react";
+
 export const MovieCard = ({ movie }) => {
   return (
     <div
       className="
-        relative
+        group relative overflow-hidden rounded-xl
         bg-[#1C1C1C]
-        rounded-xl
-        overflow-hidden
-        group
         cursor-pointer
-        transition-transform
-        hover:scale-[1.03]
+        transition-transform duration-300
+        hover:-translate-y-1
       "
     >
       {/* Poster */}
       <img
         src={movie.poster}
         alt={movie.title}
-        className="w-full aspect-[2/3] object-cover"
+        className="
+          w-full
+          h-[210px] sm:h-[260px]
+          object-cover
+          transition-transform duration-500
+          group-hover:scale-110
+        "
       />
 
-      {/* Always visible info (mobile friendly) */}
-      <div className="p-3">
-        <h3 className="text-sm font-semibold line-clamp-1">
-          {movie.title}
-        </h3>
-        <p className="text-xs text-[#FACC15]">
-          ⭐ {movie.rating}
-        </p>
+      {/* ⭐ Rating (Always visible) */}
+      <div
+        className="
+          absolute top-2 left-2
+          flex items-center gap-1
+          px-2 py-1
+          rounded-md
+          bg-black/70 backdrop-blur
+          text-xs font-medium
+        "
+      >
+        <Star size={12} className="fill-yellow-400 text-yellow-400" />
+        {movie.rating}
       </div>
 
-      {/* Hover overlay (desktop) */}
+      {/* 🎬 Title (Always visible) */}
+      <div
+        className="
+          absolute inset-x-0 bottom-0
+          p-2
+          bg-gradient-to-t from-black via-black/70 to-transparent
+          sm:group-hover:opacity-0
+          transition-opacity duration-300
+        "
+      >
+        <h4 className="text-sm font-semibold line-clamp-1">
+          {movie.title}
+        </h4>
+      </div>
+
+      {/* Hover Overlay (Desktop only) */}
       <div
         className="
           absolute inset-0
-          bg-black/70
-          opacity-0
-          group-hover:opacity-100
-          transition-opacity
           hidden sm:flex
-          flex-col
-          justify-end
+          flex-col justify-end
           p-4
+          bg-gradient-to-t from-black via-black/75 to-transparent
+          opacity-0 group-hover:opacity-100
+          transition-opacity duration-300
         "
       >
-        <p className="text-sm text-gray-300 line-clamp-4">
+        <h4 className="text-sm font-semibold mb-1 line-clamp-1">
+          {movie.title}
+        </h4>
+
+        <p className="text-xs text-gray-300/90 line-clamp-2 mb-3">
           {movie.description}
+        </p>
+
+        <button
+          className="
+            inline-flex items-center justify-center gap-2
+            w-full
+            py-2
+            rounded-full
+            bg-white/90
+            cursor-pointer
+            text-black text-sm font-semibold
+            hover:bg-white
+            transition
+          "
+        >
+          <Play size={15} className="fill-black " />
+          Watch Now
+        </button>
+      </div>
+
+      {/* Mobile Info */}
+      <div className="sm:hidden p-2 space-y-1">
+        {/* <h4 className="text-sm font-medium line-clamp-1">
+          {movie.title}
+        </h4> */}
+        <p className="text-xs text-gray-400">
+          ⭐ {movie.rating}
         </p>
       </div>
     </div>
