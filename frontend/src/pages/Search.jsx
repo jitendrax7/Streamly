@@ -2,7 +2,8 @@ import { useState, useEffect } from "react";
 import { MovieCard } from "../components/MovieCard";
 import { Search as SearchIcon } from "lucide-react";
 
-const movies = [
+/* 🔹 Dummy Explore Movies (KEEP THIS) */
+const exploreMovies = [
   {
     id: 11,
     title: "Dune",
@@ -29,32 +30,66 @@ const movies = [
   }
 ];
 
-
-
 export const Search = () => {
+  const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
   const [inputValue, setInputValue] = useState("");
   const [query, setQuery] = useState("");
 
-  // 🔹 Debounce
+  const [movies, setMovies] = useState(exploreMovies);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  /* 🔹 Debounce input */
   useEffect(() => {
     const timer = setTimeout(() => {
-      setQuery(inputValue);
+      setQuery(inputValue.trim());
     }, 400);
 
     return () => clearTimeout(timer);
   }, [inputValue]);
 
-  const filteredMovies = movies.filter((movie) =>
-    movie.title.toLowerCase().includes(query.toLowerCase())
-  );
+  /* 🔹 Fetch search results */
+  useEffect(() => {
+    const fetchSearch = async () => {
+      if (query === "") {
+        // 👉 Show explore movies if no search
+        setMovies(exploreMovies);
+        setError("");
+        return;
+      }
+
+      setLoading(true);
+      setError("");
+
+      try {
+        const res = await fetch(
+          `${BASE_URL}/movies/search?q=${encodeURIComponent(query)}`
+        );
+        const data = await res.json();
+
+        if (!res.ok || !data.success) {
+          throw new Error("Failed to search movies");
+        }
+
+        setMovies(data.results || []);
+      } catch (err) {
+        console.error(err);
+        setError("Something went wrong while searching");
+        setMovies([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchSearch();
+  }, [query, BASE_URL]);
 
   return (
     <div className="min-h-screen bg-[#0F0F0F] text-white">
-
       {/* 🔒 Sticky Search + Heading */}
       <div className="sticky md:top-16 top-0 z-30 bg-[#0F0F0F]/95 backdrop-blur-md border-b border-white/10">
         <div className="max-w-7xl mx-auto px-4 py-4 space-y-3">
-
           {/* Search Input */}
           <div className="relative max-w-xl">
             <input
@@ -63,11 +98,8 @@ export const Search = () => {
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
               className="
-                w-full
-                px-5 py-2.5 pr-12
-                rounded-full
-                bg-[#1C1C1C]
-                text-sm sm:text-base
+                w-full px-5 py-2.5 pr-12 rounded-full
+                bg-[#1C1C1C] text-sm sm:text-base
                 placeholder-gray-400
                 focus:ring-2 focus:ring-[#E50914]
                 outline-none
@@ -82,7 +114,7 @@ export const Search = () => {
 
           {/* Heading */}
           <h2 className="text-lg sm:text-xl font-semibold tracking-wide">
-            {query.trim() === "" ? (
+            {query === "" ? (
               <span className="text-gray-300">Explore</span>
             ) : (
               <>
@@ -94,10 +126,26 @@ export const Search = () => {
         </div>
       </div>
 
-      {/* Movies Grid */}
+      {/* 🔹 Results */}
       <div className="max-w-7xl mx-auto px-4 py-6">
+        {loading && (
+          <p className="text-gray-400 text-center py-10">
+            Searching movies...
+          </p>
+        )}
+
+        {error && (
+          <p className="text-red-400 text-center py-10">{error}</p>
+        )}
+
+        {!loading && !error && movies.length === 0 && (
+          <p className="text-gray-400 text-center py-10">
+            No results found
+          </p>
+        )}
+
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-          {filteredMovies.map((movie) => (
+          {movies.map((movie) => (
             <MovieCard key={movie.id} movie={movie} />
           ))}
         </div>

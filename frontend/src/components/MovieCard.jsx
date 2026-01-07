@@ -5,7 +5,7 @@ export const MovieCard = ({ movie }) => {
   const navigate = useNavigate();
   return (
     <div 
-      onClick={() => navigate(`/${movie.id}`)}
+      onClick={() => navigate(`/home/${movie.id}`)}
       className="
         group relative overflow-hidden rounded-xl
         bg-[#1C1C1C]
