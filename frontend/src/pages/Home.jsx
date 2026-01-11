@@ -1,14 +1,24 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { MobileCategory } from "../components/MobileCategory";
 import { MovieRow } from "../components/MovieRow";
 import { Hero } from "../components/Hero";
 import { HeroSkeleton } from "../components/skeletons/HeroSkeleton";
 import { MovieRowSkeleton } from "../components/skeletons/MovieRowSkeleton";
+import { HomeContext } from "../context/context";
 
-import desktopBg from "../assets/stranger-things-desktop.png"
+
 export const Home = () => {
-  const BASE_URL = import.meta.env.VITE_API_BASE_URL;
-
+  
+  const {
+    heroData,
+    trending,
+    popular,
+    newReleases,
+    actionMovies,
+    loading,
+    error,
+  } = useContext(HomeContext);
+   
   const categories = [
     "All",
     "Bollywood",
@@ -21,49 +31,9 @@ export const Home = () => {
   const [activeCategory, setActiveCategory] = useState("All");
 
   // 🔥 STATES
-  const [heroData, setHeroData] = useState(null);
-  const [trending, setTrending] = useState([]);
-  const [popular, setPopular] = useState([]);
-  const [newReleases, setNewReleases] = useState([]);
-  const [actionMovies, setActionMovies] = useState([]);
+ 
 
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
-
-  useEffect(() => {
-    const fetchHomeData = async () => {
-      try {
-        const res = await fetch(`${BASE_URL}/movies`);
-        const data = await res.json();
-
-        if (!res.ok || !data.success) {
-          throw new Error("Failed to load home data");
-        }
-
-        // ✅ HERO
-        setHeroData({
-          title: data.hero.title,
-          description: data.hero.description,
-          mobileBg: data.hero.mobileBg,
-          // desktopBg: data.hero.desktopBg,
-          desktopBg: desktopBg,
-        });
-
-        // ✅ ROWS
-        setTrending(data.trending || []);
-        setPopular(data.popular || []);
-        setNewReleases(data.new_release || []);
-        setActionMovies(data.action_thriller || []);
-      } catch (err) {
-        console.error(err);
-        setError(err.message || "Server error");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchHomeData();
-  }, [BASE_URL]);
+  
 
   /* ===================== LOADING ===================== */
   if (loading) {
